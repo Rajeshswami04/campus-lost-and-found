@@ -2,21 +2,21 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: [true, "Please provide your name"],
       trim: true,
     },
 
-    rollNumber: {
+    ID: {
       type: String,
-      required: [true, "Roll number is required"],
+      required: [true, "ID  is required"],
       unique: true,
       uppercase: true,
       index: true,
     },
 
-    collegeEmail: {
+    email: {
       type: String,
       required: [true, "College email is required"],
       unique: true,
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: 8,
-      select: false, // important for security
+      select: true, // important for security
     },
 
     avatar: {
@@ -58,7 +58,6 @@ const userSchema = new mongoose.Schema(
 
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
-
     lastLogin: {
       type: Date,
     },

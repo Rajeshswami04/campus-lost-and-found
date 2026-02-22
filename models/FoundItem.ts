@@ -21,7 +21,7 @@ const foundItemSchema = new mongoose.Schema(
         "Clothing",
         "Accessories",
         "Books",
-        "Others",
+        "idcard",
       ],
       required: true,
       index: true,
@@ -42,13 +42,6 @@ const foundItemSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-
-    foundBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-
     currentHolder: {
       type: String,
       enum: ["finder", "admin", "security"],
@@ -60,11 +53,6 @@ const foundItemSchema = new mongoose.Schema(
       enum: ["available", "claimed", "returned"],
       default: "available",
       index: true,
-    },
-
-    claimedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
     },
   },
   { timestamps: true }

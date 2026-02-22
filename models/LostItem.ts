@@ -43,22 +43,11 @@ const lostItemSchema = new mongoose.Schema(
       required: true,
     },
 
-    reportedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-
     status: {
       type: String,
       enum: ["open", "matched", "resolved"],
       default: "open",
       index: true,
-    },
-
-    matchedFoundItem: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "FoundItem",
     },
   },
   { timestamps: true }

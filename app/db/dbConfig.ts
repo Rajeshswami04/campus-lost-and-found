@@ -1,25 +1,19 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'; 
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config()
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+export async function connect() {
+    try{
+        await mongoose.connect(process.env.MONGO_URI as string)// uri always available
+        const connection = mongoose.connection;
+        connection.on('connected',()=>{
+            console.log("mongo db connected ",connection.host)
+        })
+        
 
-
-const client = new MongoClient(process.env.MONGO_URI!, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function connectDB() {
-  try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("successfully connected to MongoDB!");
-  } finally {
-    await client.close();
-  }
+    }catch(error){
+        console.log("erro in dbconfig");
+        console.log("error ", error);
+    }
+    
 }
-connectDB().catch(console.dir);
