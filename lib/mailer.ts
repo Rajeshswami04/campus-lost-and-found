@@ -1,43 +1,61 @@
-import bcryptjs from 'bcryptjs';
+import crypto from "crypto";
 import User from "@/models/Users";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv"
-dotenv.config();
 
-export const sendEmail = async({email, emailType, userId}: any) => {
-    try {
-       
-         const hashedToken = await bcryptjs.hash(userId.toString(), 10);
+type EmailType = "VERIFY" | "RESET";
 
-            await User.findByIdAndUpdate(userId, {
-                verifyToken: hashedToken,
-                verifyTokenExpiry: Date.now() + 3600000 // 1 hour expiry
-            });
-        
+export const sendEmail = async ({
+  email,
+  emailType,
+  userId,
+}: {
+  email: string;
+  emailType: EmailType;
+  userId: string;
+}) => {
+  try {
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+    const tokenExpiry = new Date(Date.now() + 3600000);
 
-
-        const transport = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: 2525,
-            auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASS
-            }
-        });
-
-    
-        const mailOptions = {
-            from: 'support@lostfound.com',
-            to: email,
-            subject:  "Verify your email" ,
-            html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to 
-            ${ "verify your email" }</p>`
-        };
-
-        const mailResponse = await transport.sendMail(mailOptions);
-        return mailResponse;
-
-} catch (error: any) {
-        throw new Error(error.message);
+    if (emailType === "VERIFY") {
+      await User.findByIdAndUpdate(userId, {
+        verifyToken: hashedToken,
+        verifyTokenExpiry: tokenExpiry,
+      });
+    } else {
+      await User.findByIdAndUpdate(userId, {
+        forgotPasswordToken: hashedToken,
+        forgotPasswordTokenExpiry: tokenExpiry,
+      });
     }
-}
+
+    const transport = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 2525,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    const isVerifyEmail = emailType === "VERIFY";
+    const path = isVerifyEmail ? "verifyemail" : "resetpassword";
+    const subject = isVerifyEmail ? "Verify your email" : "Reset your password";
+    const actionText = isVerifyEmail ? "verify your email" : "reset your password";
+
+    const mailOptions = {
+      from: "support@lostfound.com",
+      to: email,
+      subject,
+      html: `<p>Click <a href="${process.env.DOMAIN}/${path}?token=${rawToken}">here</a> to ${actionText}.</p>`,
+    };
+
+    return await transport.sendMail(mailOptions);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

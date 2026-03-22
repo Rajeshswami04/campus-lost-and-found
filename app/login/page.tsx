@@ -19,12 +19,13 @@ export default function LoginPage() {
   const onLogin = async () => {
     try {
       setLoading(true);
-      await axios.post("/api/users/login", user);
+      const response = await axios.post("/api/users/login", user);
       toast.success("Logged in successfully");
-      router.push("/user");
+      const role = response.data?.role;
+      router.push(role === "admin" ? "/admin" : "/user");
     } catch (error: any) {
       console.log("Login Failed ", error.message);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
     } finally {
       setLoading(false);
     }

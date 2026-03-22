@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
 import User from "@/models/Users";
 import { connect } from "@/app/db/dbConfig";
+import crypto from "crypto";
 
 export async function POST(request: Request) {
     await connect();
     try {
         const reqBody = await request.json();
         const { token } = reqBody;
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
         const user = await User.findOne({
-            verifyToken: token,
+            verifyToken: hashedToken,
             verifyTokenExpiry: { $gt: Date.now() } // Check if not expired
         });
 

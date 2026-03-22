@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { USER_ACCOUNT_STATUSES, USER_ROLES } from "@/lib/campus-config";
 
 const userSchema = new mongoose.Schema(
   {
@@ -14,6 +15,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       uppercase: true,
       index: true,
+      trim: true,
     },
 
     email: {
@@ -38,6 +40,41 @@ const userSchema = new mongoose.Schema(
       type: String, // profile image URL
     },
 
+    role: {
+      type: String,
+      enum: USER_ROLES,
+      default: "student",
+      index: true,
+    },
+
+    accountStatus: {
+      type: String,
+      enum: USER_ACCOUNT_STATUSES,
+      default: "active",
+      index: true,
+    },
+
+    department: {
+      type: String,
+      trim: true,
+    },
+
+    yearOfStudy: {
+      type: Number,
+      min: 1,
+      max: 4,
+    },
+
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
+
+    hostelOrBlock: {
+      type: String,
+      trim: true,
+    },
+
     reputation: {
       type: Number,
       default: 0,
@@ -47,12 +84,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-
     verifyToken: String,
     verifyTokenExpiry: Date,
 

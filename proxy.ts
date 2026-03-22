@@ -3,29 +3,26 @@ import type { NextRequest } from "next/server";
 
 export function proxy(request:NextRequest){
     const path=request.nextUrl.pathname
-    const isPublicPath=path==='/login'||path==='/'||path==='/signup'||path==='/verifyemail';
+    const isPublicPath=path==='/login'||path==='/'||path==='/signup'||path==='/verifyemail'||path==='/forgotpassword'||path==='/resetpassword';
     const token=request.cookies.get('token')?.value||'';
-    // Get the value, default to empty string if missing
-const isAdmin = request.cookies.get('isAdmin')?.value === 'true';
-    if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
-    return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Access Denied: You do not have admin privileges.' 
-      },
-      { status: 403 }
-    );
-  }
+    const role = request.cookies.get('role')?.value || 'student';
+
+    if (request.nextUrl.pathname.startsWith('/admin') && role !== 'admin') {
+      return NextResponse.redirect(new URL('/user', request.nextUrl));
+    }
+
     if(isPublicPath&&token){
-        return NextResponse.redirect(new URL('/',request.nextUrl));
+        return NextResponse.redirect(new URL(role === 'admin' ? '/admin' : '/user',request.nextUrl));
     }
     if(!isPublicPath&&!token){
        return NextResponse.redirect(new URL('/login',request.nextUrl)); 
     }
+
+    return NextResponse.next();
 }
 
 export const config={
     matcher:[
-        '/','/user','/admin','/login','/signup','/verifyemail'
+        '/','/user','/admin','/login','/signup','/verifyemail','/forgotpassword','/resetpassword'
     ]
 }

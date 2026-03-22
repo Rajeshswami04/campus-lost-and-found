@@ -1,5 +1,4 @@
 "use client";
-import { NextResponse } from "next/server";
 import React from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -11,11 +10,10 @@ export default function UserPage() {
       await axios.get("/api/users/logout");
       toast.success("logged out successfully");
       router.push("/login");
-      return NextResponse.json({ success: true, message: "logged out" });
-    } catch (error: any) {
-      console.log(error);
-      console.log(error.message);
-      return NextResponse.json({ success: false, message: "error in logout" });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "error in logout";
+      console.log(message);
+      toast.error("error in logout");
     }
   };
   return (
@@ -24,7 +22,7 @@ export default function UserPage() {
         {" "}
         I am user
       </h1>
-      <button onClick={logout} className="bg-black text-white">
+      <button  onClick={logout} className="bg-black text-white">
         logout
       </button>
     </div>

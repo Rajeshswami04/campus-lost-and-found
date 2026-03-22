@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextResponse} from "next/server";
 
 export async function GET(){
-    try {
+    try{
         const response=NextResponse.json({
-            message:"logout successfully", success:true,
+            message:"Logout successfully",
+            success:true,
         })
         response.cookies.set("token","",{httpOnly:true,expires:new Date(0)});
+        response.cookies.set("role","",{httpOnly:true,expires:new Date(0)});
         return response;
-    } catch (error:any) {
-        return NextResponse.json({error:error.message},{status:500})
+    }
+    catch(error: unknown){
+        const message = error instanceof Error ? error.message : "Logout failed";
+        return NextResponse.json({error:message},{status:500})
     }
 }

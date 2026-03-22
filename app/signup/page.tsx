@@ -37,7 +37,7 @@ export default function SignupPage() {
       toast.success("please verify also from emailbox ")
       router.push("/login");
     } catch (error: any) {
-      toast.error(error.response?.data?.error || error.message);
+    toast.error(error.response?.data?.message || error.response?.data?.error || error.message);
       console.log("Signup error: ", error);
     } finally {
       setLoading(false);
