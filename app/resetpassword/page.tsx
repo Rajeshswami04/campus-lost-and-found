@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
 export default function ResetPassword() {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [token, setToken] = useState("");
     const [password, setPassword] = useState("");
     const [buttonDisable, setButtonDisable] = useState(true);
@@ -16,9 +15,9 @@ export default function ResetPassword() {
     const [tokenValid, setTokenValid] = useState(false);
 
     useEffect(() => {
-        const urlToken = searchParams.get("token");
+        const urlToken = new URLSearchParams(window.location.search).get("token");
         setToken(urlToken || "");
-    }, [searchParams]);
+    }, []);
 
     useEffect(() => {
         const validateToken = async () => {
