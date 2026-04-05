@@ -52,14 +52,31 @@ export async function POST(request: NextRequest) {
         });
 
         const savedUser = await newUser.save();
-        await sendEmail({ 
-            email, 
-            emailType: "VERIFY", 
-            userId: savedUser._id 
-        });
+
+        let emailSent = true;
+        let emailMessage = "Verification email sent successfully";
+
+        try {
+            await sendEmail({ 
+                email, 
+                emailType: "VERIFY", 
+                userId: savedUser._id.toString(),
+            });
+        } catch (error: unknown) {
+            emailSent = false;
+            emailMessage =
+                error instanceof Error
+                    ? error.message
+                    : "Account created, but verification email could not be sent";
+        }
+
         return NextResponse.json({
-            message: "User created successfully",
+            message: emailSent
+                ? "User created successfully"
+                : "User created successfully, but verification email could not be sent yet",
             success: true,
+            emailSent,
+            emailMessage,
             user: {
                 id: savedUser._id,
                 username: savedUser.username,

@@ -1,13 +1,15 @@
 import { connect } from "@/app/db/dbConfig";
 import { verifyAuthToken } from "@/lib/auth";
-import { ITEM_CATEGORIES } from "@/lib/campus-config";
-import LostItem from "@/models/LostItem";
+import FoundItem from "@/models/FoundItem";
 import { NextRequest, NextResponse } from "next/server";
-
+import {
+  FOUND_ITEM_STATUSES,
+  HOLDER_TYPES
+} from "@/lib/campus-config";
 
 //normalisation means to trim the space
 
-function normalizeProofHints(value: unknown) {
+function normalizeQuestions(value: unknown) {
   if (Array.isArray(value)) {
     return value
       .map((hint) => String(hint).trim())
@@ -59,56 +61,78 @@ export async function POST(request: NextRequest) {
       category,
       color,
       brand,
-      lostLocation,
-      lostDate,
-      proofHints,
+      foundLocation,
+      foundDate,
+      verificationQuestion,
+      currentHolder,
+      storageLocation,
       image,
       images,
     } = reqBody;
-
-    if (!title || !description || !category || !lostLocation || !lostDate) {
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !foundLocation ||
+      !foundDate ||
+      !currentHolder ||
+      !storageLocation ||
+      !verificationQuestion
+    ) {
       return NextResponse.json(
-        { error: "Title, description, category, location, and date are required" },
+        {
+          error:
+            "Title, description, category, found location, found date, current holder, storage location, and verification question are required",
+        },
         { status: 400 }
       );
     }
-    
-    const parsedLostDate = new Date(lostDate);
-    if (Number.isNaN(parsedLostDate.getTime())) {
+
+    if (!HOLDER_TYPES.includes(currentHolder)) {
       return NextResponse.json(
-        { error: "Invalid lost date" },
+        { error: "Invalid current holder value" },
+        { status: 400 }
+      );
+    }
+
+    const parsedFoundDate = new Date(foundDate);
+    if (Number.isNaN(parsedFoundDate.getTime())) {
+      return NextResponse.json(
+        { error: "Invalid found date" },
         { status: 400 }
       );
     }
 
     const normalizedImages = normalizeImages(images ?? image);
-    const normalizedProofHints = normalizeProofHints(proofHints);
+    const normalizedVerificationQuestions = normalizeQuestions(verificationQuestion);
 
-    const lostItem = await LostItem.create({
-      reporter: authUser.id,
+    const founditem = await FoundItem.create({
+      finder: authUser.id,
       title: String(title).trim(),
       description: String(description).trim(),
       category,
       color: color ? String(color).trim() : undefined,
       brand: brand ? String(brand).trim() : undefined,
       images: normalizedImages,
-      lostLocation: String(lostLocation).trim(),
-      lostDate: parsedLostDate,
-      proofHints: normalizedProofHints,
-      status: "under_review",
+      foundLocation: String(foundLocation).trim(),
+      foundDate: parsedFoundDate,
+      verificationQuestions: normalizedVerificationQuestions,
+      status: FOUND_ITEM_STATUSES.includes("available") ? "available" : undefined,
+      currentHolder,
+      storageLocation: String(storageLocation).trim(),
     });
 
     return NextResponse.json(
       {
-        message: "Lost item report created successfully",
+        message: "Found item report created successfully",
         success: true,
-        lostItem,
+        founditem,
       },
       { status: 201 }
     );
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "Failed to create lost item report";
+      error instanceof Error ? error.message : "Failed to create Found item report";
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -126,18 +150,18 @@ export async function GET(request: NextRequest) {
       );
     }
     const authUser = verifyAuthToken(token);
-    const lostItems = await LostItem.find({ reporter: authUser.id })
+    const foundItems = await FoundItem.find({ finder: authUser.id })
       .sort({ createdAt: -1 });
     return NextResponse.json(
       {
         success: true,
-        lostItems,
+        foundItems,
       },
       { status: 200 }
     );
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "Failed to fetch lost item reports";
+      error instanceof Error ? error.message : "Failed to fetch found item reports";
 
     return NextResponse.json({ error: message }, { status: 500 });
   }

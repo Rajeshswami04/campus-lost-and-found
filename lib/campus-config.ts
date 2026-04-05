@@ -10,6 +10,7 @@ export const ITEM_CATEGORIES = [
   "keys",
   "clothing",
   "accessories",
+  "laptop",
   "books",
   "bottle",
   "bag",
