@@ -3,10 +3,10 @@ import User from "@/models/Users";
 import { NextRequest,NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-connect();
 
 export async function POST(request:NextRequest) {
     try {
+        await connect();
         const reqBody=await request.json();
         // we can not use get because get have no bodies so use post method
         // never use get for login and signup keep in mind
