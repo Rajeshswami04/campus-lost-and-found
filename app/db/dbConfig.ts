@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-dotenv.config();
 
+dotenv.config();
+// ts object
 type MongooseCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 };
 
+// globally declared
 declare global {
   var mongooseCache: MongooseCache | undefined;
 }

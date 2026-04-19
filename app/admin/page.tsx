@@ -480,19 +480,18 @@ export default async function AdminDashboard() {
                     likely match before checking proof details.
                   </p>
                 </div>
-
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
                   <div className="flex items-center gap-3">
                     <ArrowRight className="size-4 text-blue-300" />
                     <p className="text-sm font-semibold text-white">
-                      Next good upgrade
+                      Log out when done
+                      <Link
+                        href="/logout"
+                        className="ml-1 text-blue-500 hover:underline"
+                      >
+                        (Logout)
+                      </Link>
                     </p>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-400">
-                    Add admin APIs for status updates, notes, and match actions
-                    so this dashboard becomes operational instead of read-only.
-                  </p>
-                </div>
               </CardContent>
             </Card>
           </div>

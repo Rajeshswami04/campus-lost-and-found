@@ -54,7 +54,7 @@ export default function AdminFoundStatusSelect({
       value={status}
       onChange={(event) => handleChange(event.target.value)}
       disabled={loading}
-      className="w-full min-w-0 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white outline-none transition focus:border-blue-500 sm:w-[170px] disabled:cursor-not-allowed disabled:opacity-60"
+      className="w-full min-w-0 rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white outline-none transition focus:border-blue-500 sm:w-42.5 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {foundStatuses.map((itemStatus) => (
         <option key={itemStatus} value={itemStatus}>

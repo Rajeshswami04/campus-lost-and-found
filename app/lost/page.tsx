@@ -33,6 +33,12 @@ const initialForm = {
   proofHints: "",
 };
 
+const todayDate = new Date(
+  Date.now() - new Date().getTimezoneOffset() * 60_000
+)
+  .toISOString()
+  .split("T")[0];
+
 export default function LostPage() {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
@@ -87,6 +93,7 @@ export default function LostPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     try {
@@ -111,7 +118,6 @@ export default function LostPage() {
       setSelectedImage(null);
       setPreviewUrl("");
       setUploadedImageUrl("");
-      event.currentTarget.reset();
     } catch (error: unknown) {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.error ||
@@ -270,6 +276,7 @@ export default function LostPage() {
                     id="lostDate"
                     name="lostDate"
                     type="date"
+                    max={todayDate}
                     value={form.lostDate}
                     onChange={handleChange}
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500"

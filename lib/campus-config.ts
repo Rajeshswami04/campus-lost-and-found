@@ -36,3 +36,6 @@ export const FOUND_ITEM_STATUSES = [
 ] as const;
 
 export const HOLDER_TYPES = ["finder", "security", "admin", "office"] as const;
+
+export const CLAIM_STATUSES=["pending","approved","rejected","cancelled",] as const;
+

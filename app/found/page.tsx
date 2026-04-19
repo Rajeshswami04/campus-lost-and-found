@@ -34,8 +34,14 @@ const initialForm = {
   foundDate: "",
   storageLocation: "",
   currentHolder: "finder",
-  verificationQuestion:"",
+  verificationQuestion: "",
 };
+
+const todayDate = new Date(
+  Date.now() - new Date().getTimezoneOffset() * 60_000
+)
+  .toISOString()
+  .split("T")[0];
 
 export default function FoundPage() {
   const [form, setForm] = useState(initialForm);
@@ -94,6 +100,7 @@ export default function FoundPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     try {
@@ -107,18 +114,15 @@ export default function FoundPage() {
         imageUrl = uploadResponse.data.secure_url;
         setUploadedImageUrl(imageUrl);
       }
-
-      const response = await axios.post("/api/users/found", {
+      await axios.post("/api/users/found", {
         ...form,
         image: imageUrl,
       });
-
-      toast.success(response.data.message || "found item report submitted");
+      toast.success("found item report submitted");
       setForm(initialForm);
       setSelectedImage(null);
       setPreviewUrl("");
       setUploadedImageUrl("");
-      event.currentTarget.reset();
     } catch (error: unknown) {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.error ||
@@ -277,6 +281,7 @@ export default function FoundPage() {
                     id="foundDate"
                     name="foundDate"
                     type="date"
+                    max={todayDate}
                     value={form.foundDate}
                     onChange={handleChange}
                     className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-500"

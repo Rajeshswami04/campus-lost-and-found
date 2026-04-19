@@ -42,6 +42,13 @@ function getToken(request: NextRequest) {
   return request.cookies.get("token")?.value;
 }
 
+function getEndOfToday() {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  return today;
+}
+ // 26-04-2026 23:59:59:999
+
 export async function POST(request: NextRequest) {
   try {
     await connect();
@@ -103,6 +110,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (parsedFoundDate > getEndOfToday()) {
+      return NextResponse.json(
+        { error: "Found date cannot be in the future" },
+        { status: 400 }
+      );
+    }
+
     const normalizedImages = normalizeImages(images ?? image);
     const normalizedVerificationQuestions = normalizeQuestions(verificationQuestion);
 
@@ -121,7 +135,6 @@ export async function POST(request: NextRequest) {
       currentHolder,
       storageLocation: String(storageLocation).trim(),
     });
-
     return NextResponse.json(
       {
         message: "Found item report created successfully",
@@ -130,10 +143,9 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: unknown) {
+  } catch (error: any) {
     const message =
       error instanceof Error ? error.message : "Failed to create Found item report";
-
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -11,6 +11,7 @@ export type AuthUser = {
 export function verifyAuthToken(token: string) {
   return jwt.verify(token, process.env.TOKEN_SECRET!) as AuthUser;
 }
+// in above function i am returning user as payload
 
 export function hasRequiredRole(userRole: AuthUser["role"], allowedRoles: AuthUser["role"][]) {
   return allowedRoles.includes(userRole);

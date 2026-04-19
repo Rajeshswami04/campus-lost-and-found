@@ -40,6 +40,12 @@ function getToken(request: NextRequest) {
   return request.cookies.get("token")?.value;
 }
 
+function getEndOfToday() {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  return today;
+}
+
 export async function POST(request: NextRequest) {
   try {
     await connect();
@@ -77,6 +83,13 @@ export async function POST(request: NextRequest) {
     if (Number.isNaN(parsedLostDate.getTime())) {
       return NextResponse.json(
         { error: "Invalid lost date" },
+        { status: 400 }
+      );
+    }
+
+    if (parsedLostDate > getEndOfToday()) {
+      return NextResponse.json(
+        { error: "Lost date cannot be in the future" },
         { status: 400 }
       );
     }
