@@ -151,14 +151,20 @@ export default function UserPage() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
+                href="/browse-found"
+                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Claim items
+              </Link>
+              <Link
                 href="/lost"
-                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
               >
                 Report lost item
               </Link>
               <Link
                 href="/found"
-                className="inline-flex items-center justify-center rounded-full border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
+                className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
               >
                 Report found item
               </Link>

@@ -75,7 +75,7 @@ export default function SignupPage() {
               type="email"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
-              placeholder="email@nitj.ac.in"
+              placeholder="email@example.com"
             />
           </div>
 

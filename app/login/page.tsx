@@ -56,7 +56,7 @@ export default function LoginPage() {
           type="email"
           value={user.email}
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-          placeholder="email@nitj.ac.in"
+          placeholder="email@example.com"
         />
 
         <label htmlFor="password"  className="text-sm font-medium mb-1">Password</label>

@@ -20,13 +20,10 @@ const userSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      required: [true, "College email is required"],
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
-      match: [
-        /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)?ac\.in$/,
-        "Please use a valid college email",
-      ],
+      trim: true,
     },
 
     password: {
