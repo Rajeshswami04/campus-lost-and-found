@@ -1,4 +1,5 @@
 import { connect } from "@/app/db/dbConfig";
+import { apiAj, protect } from "@/lib/arcjet";
 import { hasRequiredRole, verifyAuthToken } from "@/lib/auth";
 import Claim from "@/models/Claim";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,6 +10,9 @@ function getToken(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const blocked = await protect(request, apiAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);

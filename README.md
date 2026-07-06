@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lost & Found
+
+A campus-focused lost and found web application built with Next.js and MongoDB.
+
+Users can register, report lost or found items, browse reports, submit claims, and follow a secure return flow. Admins and staff can manage item status and user accounts.
+
+## Features
+
+- User authentication: signup, login, email verification, password reset
+- Lost and found report submission with image upload
+- Browse found and lost items with detail pages
+- Claim management for owners and finders
+- Admin dashboard for reviewing reports and updating status
+- Role-based access control for students, security, and admins
+- Cloudinary image uploads and email notifications
+
+## Tech Stack
+
+- Next.js 16 + React 19
+- TypeScript
+- Tailwind CSS
+- MongoDB / Mongoose
+- JWT authentication
+- Cloudinary for file uploads
+- Nodemailer / SMTP for email flows
 
 ## Getting Started
 
-First, run the development server:
+### Install dependencies
+
+```bash
+cd lost_found
+npm install
+```
+
+### Configure environment variables
+
+Copy `.env.example` to `.env` and fill in the required values:
+
+```bash
+cp .env.example .env
+```
+
+Required values:
+
+- `MONGO_URI` — MongoDB connection string
+- `TOKEN_SECRET` — JWT signing secret
+- `DOMAIN` — app domain, e.g. `http://localhost:3000`
+- `SMTP_SERVICE`, `SMTP_USER`, `SMTP_PASS` — email provider settings
+- `MAIL_FROM` — sender address for notification emails
+
+### Run the app
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` — start development server
+- `npm run build` — build production app
+- `npm run start` — start production server
+- `npm run lint` — run ESLint checks
 
-## Learn More
+## Folder Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `app/` — Next.js App Router pages, API routes, and UI layout
+- `lib/` — helper utilities and configuration
+- `models/` — Mongoose schemas for users, lost items, found items, and claims
+- `components/` — UI components and reusable controls
+- `public/` — static assets
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- The app stores authentication tokens in HTTP-only cookies for secure sessions.
+- Images are uploaded through `app/api/upload/route.ts` using Cloudinary.
+- MongoDB is connected in `app/db/dbConfig.ts`.
 
-## Deploy on Vercel
+## About
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This repository is built to support a community-driven lost and found system for campus users, with a clean modern UI and admin controls for managing recovery workflows.

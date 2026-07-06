@@ -10,8 +10,7 @@ const lostStatuses = [
   "under_review",
   "matched",
   "claimed",
-  "returned",
-  "closed",
+  "returned"
 ];
 
 export default function AdminLostStatusSelect({

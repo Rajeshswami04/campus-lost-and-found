@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import {LogOut} from "lucide-react"
+import axios from "axios";
+import toast from "react-hot-toast";
 import {
   ArrowRight,
   Clock3,
@@ -26,6 +29,7 @@ import { hasRequiredRole, verifyAuthToken } from "@/lib/auth";
 import FoundItem from "@/models/FoundItem";
 import LostItem from "@/models/LostItem";
 import User from "@/models/Users";
+import { LogoutButton } from "@/components/logoutbutton";
 
 export const dynamic = "force-dynamic";
 
@@ -82,10 +86,9 @@ function getLostStatusClass(status: string) {
     case "matched":
       return "border-sky-500/30 bg-sky-500/10 text-sky-300";
     case "returned":
+      return "border-zinc-700 bg-zinc-800 text-zinc-300";
     case "claimed":
       return "border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
-    case "closed":
-      return "border-zinc-700 bg-zinc-800 text-zinc-300";
     default:
       return "border-blue-500/30 bg-blue-500/10 text-blue-300";
   }
@@ -98,10 +101,9 @@ function getFoundStatusClass(status: string) {
     case "matched":
       return "border-sky-500/30 bg-sky-500/10 text-sky-300";
     case "returned":
+      return "border-zinc-700 bg-zinc-800 text-zinc-300";
     case "claimed":
       return "border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
-    case "archived":
-      return "border-zinc-700 bg-zinc-800 text-zinc-300";
     default:
       return "border-blue-500/30 bg-blue-500/10 text-blue-300";
   }
@@ -244,7 +246,6 @@ export default async function AdminDashboard() {
       .populate("finder", "username ID email")
       .lean<FoundReport[]>(),
   ]);
-
   const attentionCount = reviewLostReports + verificationFoundReports;
   const matchCount = matchedLostReports + matchedFoundReports;
   const serializedLostReports = recentLostReports.map((report) => ({
@@ -258,6 +259,7 @@ export default async function AdminDashboard() {
     finder: normalizePerson(report.finder),
   }));
 
+      
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
@@ -266,7 +268,7 @@ export default async function AdminDashboard() {
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <Badge className="rounded-full border border-zinc-700 bg-zinc-950 px-4 py-1 text-blue-300">
-                Admin workspace
+                Admin 
               </Badge>
               <h1 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
                 Review reports, spot matches, and keep the queue under control.
@@ -305,7 +307,7 @@ export default async function AdminDashboard() {
           <StatCard
             title="Registered users"
             value={totalUsers}
-            helper={`${activeUsers} active accounts and ${adminUsers} admin users.`}
+            helper={`${activeUsers} active accounts and ${adminUsers} admin accounts.`}
             icon={Users}
           />
           <StatCard
@@ -334,10 +336,6 @@ export default async function AdminDashboard() {
               <CardTitle className="text-2xl font-bold text-white">
                 Recent lost reports
               </CardTitle>
-              <CardDescription className="text-zinc-400">
-                These are the latest owner submissions waiting for triage,
-                matching, or closure.
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
               {serializedLostReports.length ? (
@@ -378,8 +376,8 @@ export default async function AdminDashboard() {
                 <EmptyState
                   title="No lost reports yet"
                   description="Once students start reporting missing items, the newest cases will appear here for admin review."
-                  actionHref="/lost"
-                  actionLabel="Open lost report form"
+                  actionHref="/"
+                  actionLabel="it Will be never empty.."
                 />
               )}
             </CardContent>
@@ -437,9 +435,9 @@ export default async function AdminDashboard() {
                 ) : (
                   <EmptyState
                     title="No found reports yet"
-                    description="Finder submissions will appear here so admins can verify storage and look for likely owners."
+                    description="Finder submissions."
                     actionHref="/"
-                    actionLabel="Back to home"
+                    actionLabel="No Work Yet.."
                   />
                 )}
               </CardContent>
@@ -450,9 +448,6 @@ export default async function AdminDashboard() {
                 <CardTitle className="text-2xl font-bold text-white">
                   Admin checklist
                 </CardTitle>
-                <CardDescription className="text-zinc-400">
-                  A simple structure for what the admin team should do first.
-                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 pt-6">
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
@@ -462,10 +457,6 @@ export default async function AdminDashboard() {
                       Review queue first
                     </p>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-400">
-                    Prioritize reports marked under review or under verification
-                    before handling old closed cases.
-                  </p>
                 </div>
 
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
@@ -475,22 +466,9 @@ export default async function AdminDashboard() {
                       Compare location, date, and category
                     </p>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-400">
-                    Those three fields are usually the fastest way to narrow a
-                    likely match before checking proof details.
-                  </p>
                 </div>
                   <div className="flex items-center gap-3">
-                    <ArrowRight className="size-4 text-blue-300" />
-                    <p className="text-sm font-semibold text-white">
-                      Log out when done
-                      <Link
-                        href="/logout"
-                        className="ml-1 text-blue-500 hover:underline"
-                      >
-                        (Logout)
-                      </Link>
-                    </p>
+            <LogoutButton />
                   </div>
               </CardContent>
             </Card>

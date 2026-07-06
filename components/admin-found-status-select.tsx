@@ -11,7 +11,6 @@ const foundStatuses = [
   "matched",
   "claimed",
   "returned",
-  "archived",
 ];
 
 export default function AdminFoundStatusSelect({

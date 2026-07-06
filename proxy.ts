@@ -20,7 +20,6 @@ export function proxy(request:NextRequest){
 
     return NextResponse.next();
 }
-
 export const config={
     matcher:[
         '/','/user','/admin','/login','/signup','/verifyemail','/forgotpassword','/resetpassword'

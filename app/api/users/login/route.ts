@@ -3,9 +3,13 @@ import User from "@/models/Users";
 import { NextRequest,NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { authAj, protect } from "@/lib/arcjet";
 
 export async function POST(request:NextRequest) {
     try {
+        const blocked = await protect(request, authAj);
+        if (blocked) return blocked;
+
         await connect();
         const reqBody=await request.json();
         // we can not use get because get have no bodies so use post method

@@ -1,4 +1,5 @@
 import { connect } from "@/app/db/dbConfig";
+import { protect, writeAj } from "@/lib/arcjet";
 import { hasRequiredRole, verifyAuthToken } from "@/lib/auth";
 import Claim from "@/models/Claim";
 import FoundItem from "@/models/FoundItem";
@@ -13,6 +14,9 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const blocked = await protect(request, writeAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);
@@ -93,4 +97,3 @@ export async function PATCH(
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-

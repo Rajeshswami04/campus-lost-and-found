@@ -4,8 +4,12 @@ import User from "@/models/Users"
 
 import { connect } from "@/app/db/dbConfig"
 import bcryptjs from "bcryptjs";
+import { authAj, protect } from "@/lib/arcjet";
 
 export async function GET(request: NextRequest) {
+    const blocked = await protect(request, authAj);
+    if (blocked) return blocked;
+
     await connect();
 
     try {
@@ -35,15 +39,20 @@ export async function GET(request: NextRequest) {
             { message: "Token is valid" },
             { status: 200 }
         );
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Error validating token";
         return NextResponse.json(
-            { error: error.message || "Error validating token" },
+            { error: message },
             { status: 500 }
         );
     }
 }
 
 export async function POST(request: NextRequest) {
+    const blocked = await protect(request, authAj);
+    if (blocked) return blocked;
+
     await connect();
     try {
         const reqBody = await request.json();
@@ -86,7 +95,7 @@ export async function POST(request: NextRequest) {
             { message: "Password reset successful" },
             { status: 200 }
         )
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.log("error in reset password", error);
         return NextResponse.json(
             { error: "Error resetting password" },

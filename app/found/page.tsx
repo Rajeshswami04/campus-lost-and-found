@@ -157,20 +157,7 @@ export default function FoundPage() {
               review the report and help match it with lost items.
             </p>
 
-            <div className="mt-8 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
-              <div className="flex items-start gap-3">
-                <ShieldAlert className="mt-0.5 size-5 text-blue-400" />
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    Admin approval flow
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-zinc-300">
-                    Reports should stay under review before they are treated as
-                    active recovery cases.
-                  </p>
-                </div>
-              </div>
-            </div>
+            
 
             <div className="mt-8 space-y-4 text-sm text-zinc-400">
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
@@ -181,7 +168,7 @@ export default function FoundPage() {
                 </p>
               </div>
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="font-medium text-white">Image support</p>
+                <p className="font-medium text-white">Image instruction</p>
                 <p className="mt-2 leading-6">
                   Upload a clear image showing the item from multiple sides so
                   admin can review it and verify possible matches faster.

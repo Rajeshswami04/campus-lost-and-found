@@ -57,12 +57,6 @@ const lostItemSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
-    // campusZone: {
-    //   type: String,
-    //   trim: true,
-    // },
-
     lostDate: {
       type: Date,
       required: true,
@@ -88,7 +82,7 @@ const lostItemSchema = new mongoose.Schema(
       index: true,
     },
 
-    handledBy: {
+    handledBy: {//onhold
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

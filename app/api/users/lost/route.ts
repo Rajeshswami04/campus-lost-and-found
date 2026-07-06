@@ -1,6 +1,6 @@
 import { connect } from "@/app/db/dbConfig";
+import { apiAj, protect, writeAj } from "@/lib/arcjet";
 import { verifyAuthToken } from "@/lib/auth";
-import { ITEM_CATEGORIES } from "@/lib/campus-config";
 import LostItem from "@/models/LostItem";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -48,6 +48,9 @@ function getEndOfToday() {
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await protect(request, writeAj);
+    if (blocked) return blocked;
+
     await connect();
     const token = getToken(request);
     if (!token) {
@@ -129,6 +132,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const blocked = await protect(request, apiAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);

@@ -1,9 +1,13 @@
 import { connect } from "@/app/db/dbConfig";
+import { protect, publicReadAj } from "@/lib/arcjet";
 import FoundItem from "@/models/FoundItem";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const blocked = await protect(request, publicReadAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const foundItems = await FoundItem.find({

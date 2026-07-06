@@ -1,4 +1,5 @@
 import { connect } from "@/app/db/dbConfig";
+import { protect, writeAj } from "@/lib/arcjet";
 import { hasRequiredRole, verifyAuthToken } from "@/lib/auth";
 import { LOST_ITEM_STATUSES } from "@/lib/campus-config";
 import LostItem from "@/models/LostItem";
@@ -13,6 +14,9 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const blocked = await protect(request, writeAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);

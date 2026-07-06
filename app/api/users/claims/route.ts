@@ -1,4 +1,5 @@
 import { connect } from "@/app/db/dbConfig";
+import { apiAj, protect, writeAj } from "@/lib/arcjet";
 import { verifyAuthToken } from "@/lib/auth";
 import Claim from "@/models/Claim";
 import FoundItem from "@/models/FoundItem";
@@ -13,6 +14,9 @@ function getToken(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const blocked = await protect(request, writeAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);
@@ -103,6 +107,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const blocked = await protect(request, apiAj);
+    if (blocked) return blocked;
+
     await connect();
 
     const token = getToken(request);

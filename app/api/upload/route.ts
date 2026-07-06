@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 
+import { protect, writeAj } from "@/lib/arcjet";
 import cloudinary from "@/lib/cloudinary";
 
 export async function POST(request: Request) {
   try {
+    const blocked = await protect(request, writeAj);
+    if (blocked) return blocked;
+
     const formData = await request.formData();
     const file = formData.get("file");
 

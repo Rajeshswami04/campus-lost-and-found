@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import User from "@/models/Users";
 import { connect } from "@/app/db/dbConfig";
 import crypto from "crypto";
+import { authAj, protect } from "@/lib/arcjet";
 
 export async function POST(request: Request) {
+    const blocked = await protect(request, authAj);
+    if (blocked) return blocked;
+
     await connect();
     try {
         const reqBody = await request.json();
@@ -26,7 +30,8 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ message: "Email verified successfully", success: true });
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Verification failed";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

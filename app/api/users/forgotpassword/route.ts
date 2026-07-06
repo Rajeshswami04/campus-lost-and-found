@@ -2,8 +2,12 @@ import { connect } from "@/app/db/dbConfig";
 import User from "@/models/Users";
 import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/lib/mailer";
+import { authAj, protect } from "@/lib/arcjet";
 
 export async function POST(request: NextRequest) {
+  const blocked = await protect(request, authAj);
+  if (blocked) return blocked;
+
   await connect();
 
   try {
@@ -36,9 +40,11 @@ export async function POST(request: NextRequest) {
       { message: "Reset password email sent successfully" },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Error sending reset email";
     return NextResponse.json(
-      { error: error.message || "Error sending reset email" },
+      { error: message },
       { status: 500 }
     );
   }

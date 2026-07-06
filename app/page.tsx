@@ -17,6 +17,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { connect } from "@/app/db/dbConfig";
+import FoundItem from "@/models/FoundItem";
+import LostItem from "@/models/LostItem";
+
+export const dynamic = "force-dynamic";
 
 const highlights = [
   {
@@ -56,11 +61,114 @@ const steps = [
     label: "3",
     title: "Reconnect securely",
     description:
-      "Confirm ownership and arrange a safe return at a familiar public place.",
+      "After Admin verification  arrange a safe return at a familiar public place.",
   },
 ];
 
-export default function Home() {
+type RecentReport = {
+  _id: string;
+  type: "lost" | "found";
+  title: string;
+  description: string;
+  location: string;
+  reportDate: Date | string;
+  status: string;
+  createdAt: Date | string;
+};
+
+type LostReportDocument = {
+  _id: unknown;
+  title: string;
+  description: string;
+  lostLocation: string;
+  lostDate: Date | string;
+  status: string;
+  createdAt: Date | string;
+};
+
+type FoundReportDocument = {
+  _id: unknown;
+  title: string;
+  description: string;
+  foundLocation: string;
+  foundDate: Date | string;
+  status: string;
+  createdAt: Date | string;
+};
+
+function formatLabel(value: string) {
+  return value.replaceAll("_", " ");
+}
+
+function formatRelativeDate(value: Date | string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Recently";
+  }
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+  }).format(date);
+}
+
+function getReportBadge(report: RecentReport) {
+  if (report.type === "lost") {
+    return report.status === "under_review" ? "Lost" : formatLabel(report.status);
+  }
+
+  return "Found";
+}
+
+async function getRecentReports() {
+  await connect();
+
+  const [lostReports, foundReports] = await Promise.all([
+    LostItem.find({ status: { $in: ["open", "under_review", "matched"] } })
+      .sort({ createdAt: -1 })
+      .select("_id title description lostLocation lostDate status createdAt")
+      .limit(3)
+      .lean<LostReportDocument[]>(),
+    FoundItem.find({ status: { $in: ["available", "under_verification", "matched"] } })
+      .sort({ createdAt: -1 })
+      .select("_id title description foundLocation foundDate status createdAt")
+      .limit(3)
+      .lean<FoundReportDocument[]>(),
+  ]);
+
+  return [
+    ...lostReports.map((report) => ({
+      _id: String(report._id),
+      type: "lost" as const,
+      title: report.title,
+      description: report.description,
+      location: report.lostLocation,
+      reportDate: report.lostDate,
+      status: report.status,
+      createdAt: report.createdAt,
+    })),
+    ...foundReports.map((report) => ({
+      _id: String(report._id),
+      type: "found" as const,
+      title: report.title,
+      description: report.description,
+      location: report.foundLocation,
+      reportDate: report.foundDate,
+      status: report.status,
+      createdAt: report.createdAt,
+    })),
+  ]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 3);
+}
+
+export default async function Home() {
+  const recentReports = await getRecentReports();
+
   return (
     <main className="min-h-screen overflow-hidden bg-zinc-950 text-white">
       <section className="relative isolate">
@@ -122,7 +230,7 @@ export default function Home() {
                   variant="outline"
                   className="rounded-full border-zinc-700 bg-zinc-900 px-7 text-base font-semibold text-white hover:bg-zinc-800"
                 >
-                  <Link href="/login">I found something</Link>
+                  <Link href="/login">I found something..</Link>
                 </Button>
               </div>
 
@@ -163,51 +271,48 @@ export default function Home() {
                   <CardTitle className="text-2xl font-black text-white">
                     Nearby item activity
                   </CardTitle>
+                  {/* {how to make it dynmaic most recent three items} */}
                   <CardDescription className="max-w-md text-sm leading-6 text-zinc-400">
-                    Surface the most relevant lost and found reports by location,
+                    the most relevant lost and found reports by location,
                     category, and time.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="relative space-y-4">
-                  <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-semibold text-white">
-                          Lost black backpack
-                        </p>
-                        <p className="mt-1 text-sm text-zinc-400">
-                          Last seen near the library entrance around 5:30 PM.
-                        </p>
+                  {recentReports.length ? (
+                    recentReports.map((report) => (
+                      <div
+                        key={`${report.type}-${report._id}`}
+                        className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-semibold text-white">
+                              {report.title}
+                            </p>
+                            <p className="mt-1 line-clamp-2 text-sm text-zinc-400">
+                              {report.description}
+                            </p>
+                          </div>
+                          <Badge className="rounded-full bg-blue-600 text-white">
+                            {getReportBadge(report)}
+                          </Badge>
+                        </div>
+                        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-zinc-500">
+                          <span className="inline-flex items-center gap-2">
+                            <MapPin className="size-4" />
+                            {report.location}
+                          </span>
+                          <span>{formatRelativeDate(report.reportDate)}</span>
+                        </div>
                       </div>
-                      <Badge className="rounded-full bg-blue-600 text-white">
-                        Urgent
-                      </Badge>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+                      <p className="font-semibold text-white">
+                        No recent reports yet
+                      </p>
                     </div>
-                    <div className="mt-3 flex items-center gap-2 text-sm text-zinc-500">
-                      <MapPin className="size-4" />
-                      North Campus
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-semibold text-white">
-                          Found student ID card
-                        </p>
-                        <p className="mt-1 text-sm text-zinc-400">
-                          Picked up near the canteen and reported by a volunteer.
-                        </p>
-                      </div>
-                      <Badge className="rounded-full bg-blue-600 text-white">
-                        Found
-                      </Badge>
-                    </div>
-                    <div className="mt-3 flex items-center gap-2 text-sm text-zinc-500">
-                      <MapPin className="size-4" />
-                      Main Block
-                    </div>
-                  </div>
+                  )}
 
                   <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
                     <p className="text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">
@@ -256,7 +361,7 @@ export default function Home() {
                 How it works
               </p>
               <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-                A clean flow that reduces confusion when someone is stressed.
+                flow that reduces confusion when someone is stressed.
               </h2>
             </div>
             <Button

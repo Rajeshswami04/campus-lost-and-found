@@ -3,8 +3,12 @@ import User from "@/models/Users";
 import bcryptjs from "bcryptjs";
 import { connect } from "@/app/db/dbConfig"; 
 import { sendEmail } from "@/lib/mailer";
+import { authAj, protect } from "@/lib/arcjet";
 export async function POST(request: NextRequest) {
     try {
+        const blocked = await protect(request, authAj);
+        if (blocked) return blocked;
+
       
         await connect();
 

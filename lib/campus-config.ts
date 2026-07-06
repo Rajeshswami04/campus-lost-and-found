@@ -23,7 +23,6 @@ export const LOST_ITEM_STATUSES = [
   "matched",
   "claimed",
   "returned",
-  "closed",
 ] as const;
 
 export const FOUND_ITEM_STATUSES = [
@@ -32,7 +31,6 @@ export const FOUND_ITEM_STATUSES = [
   "matched",
   "claimed",
   "returned",
-  "archived",
 ] as const;
 
 export const HOLDER_TYPES = ["finder", "security", "admin", "office"] as const;
