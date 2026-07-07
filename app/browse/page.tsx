@@ -1,4 +1,4 @@
-// app/browse-found/page.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -176,7 +176,7 @@ export default function BrowseFoundPage() {
                 <div className="mt-5 pt-4 border-t border-zinc-800">
                   {["available", "under_verification"].includes(item.status) ? (
                     <Link
-                      href={`/browse-found/${item._id}`}
+                      href={`/browse/${item._id}`}
                       className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
                     >
                       Claim this item

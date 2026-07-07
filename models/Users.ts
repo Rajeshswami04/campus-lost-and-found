@@ -71,12 +71,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-
-    reputation: {
-      type: Number,
-      default: 0,
-    },
-
     isVerified: {
       type: Boolean,
       default: false,

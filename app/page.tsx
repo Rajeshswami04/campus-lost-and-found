@@ -2,7 +2,12 @@ import Link from "next/link";
 import {
   ArrowRight,
   BellRing,
+  Github,
+  Instagram,
+  Linkedin,
+  Mail,
   MapPin,
+  Phone,
   Search,
   ShieldCheck,
   Sparkles,
@@ -63,6 +68,39 @@ const steps = [
     description:
       "After Admin verification  arrange a safe return at a familiar public place.",
   },
+];
+
+const footerContacts = [
+  {
+    label: "Email",
+    value: "rs75975424@gmail.com",
+    href: "mailto:rs75975424@gmail.com",
+    icon: Mail,
+  },
+  {
+    label: "Phone",
+    value: "+91 7597542465",
+    href: "tel:+917597542465",
+    icon: Phone,
+  },
+  {
+    label: "Location",
+    value: "Community help desk",
+    href: "/",
+    icon: MapPin,
+  },
+];
+
+const footerLinks = [
+  { label: "Browse things", href: "/browse" },
+  { label: "Report lost", href: "/lost" },
+  { label: "Report found", href: "/found" },
+];
+
+const socialLinks = [
+  { label: "Instagram", href: "https://instagram.com", icon: Instagram },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rajeshswami75/", icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/Rajeshswami04", icon: Github },
 ];
 
 type RecentReport = {
@@ -391,6 +429,87 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="mx-auto max-w-7xl px-6 pb-8 lg:px-10">
+        <div className="border-t border-zinc-800 py-10 text-white">
+          <div className="grid gap-10 lg:grid-cols-[1.3fr_0.8fr_0.8fr]">
+            <div>
+              <p className="text-lg font-black tracking-[0.22em] uppercase text-blue-400">
+                Lost & Found
+              </p>
+              <p className="mt-3 max-w-md text-sm leading-6 text-zinc-400">
+                A simple community space for reporting items, checking recent
+                posts, and helping belongings return to the right hands.
+              </p>
+              <div className="mt-5 flex items-center gap-3">
+                {socialLinks.map(({ label, href, icon: Icon }) => (
+                  <Button
+                    key={label}
+                    asChild
+                    size="icon"
+                    variant="outline"
+                    className="rounded-full border-zinc-700 bg-transparent text-zinc-300 hover:border-blue-600 hover:bg-zinc-900 hover:text-white"
+                    aria-label={label}
+                  >
+                    <Link href={href} target="_blank" rel="noreferrer">
+                      <Icon className="size-4" />
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-500">
+                Contact
+              </h2>
+              <div className="mt-4 space-y-3">
+                {footerContacts.map(({ label, value, href, icon: Icon }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    className="group flex items-start gap-3 text-zinc-400 transition hover:text-white"
+                  >
+                    <span className="mt-0.5 text-blue-400 transition group-hover:text-blue-300">
+                      <Icon className="size-4" />
+                    </span>
+                    <span>
+                      <span className="block text-xs uppercase tracking-[0.18em] text-zinc-500 transition group-hover:text-zinc-400">
+                        {label}
+                      </span>
+                      <span className="mt-1 block text-sm font-medium">
+                        {value}
+                      </span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-500">
+                Quick links
+              </h2>
+              <div className="mt-4 grid gap-2">
+                {footerLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="rounded-full px-1 py-2 text-sm font-medium text-zinc-400 transition hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 border-t border-zinc-800 pt-5 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+            <p>&copy; {new Date().getFullYear()} Lost & Found. All rights reserved.</p>
+            <p>Made for safer, faster community returns.</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

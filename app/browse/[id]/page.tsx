@@ -1,4 +1,4 @@
-// app/browse-found/[id]/page.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export default function FoundItemClaimPage() {
       <div className="mx-auto max-w-3xl space-y-6">
 
         <Link
-          href="/browse-found"
+          href="/browse"
           className="inline-flex items-center gap-2 text-sm text-zinc-400 transition hover:text-white"
         >
           <ArrowLeft className="size-4" />
