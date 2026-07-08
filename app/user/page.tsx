@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ArrowRight, LogOut, Package, SearchCheck } from "lucide-react";
+import { ArrowRight, LogOut, Package, SearchCheck, UserRound } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 type LostItem = {
@@ -151,22 +151,29 @@ export default function UserPage() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/browse"
-                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                href="/user/profile"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
               >
-                Claim items
+                <UserRound className="size-4" />
+                Edit profile
+              </Link>
+              <Link
+                href="/browse"
+                className="inline-flex items-center   justify-center rounded-lg  bg-zinc-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
+              >
+                Claim
               </Link>
               <Link
                 href="/lost"
                 className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
               >
-                Report lost item
+                 Lost 
               </Link>
               <Link
                 href="/found"
                 className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
               >
-                Report found item
+                Found
               </Link>
               <button
                 onClick={handleLogout}
