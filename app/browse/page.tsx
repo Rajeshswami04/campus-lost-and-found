@@ -104,7 +104,7 @@ export default function BrowseFoundPage() {
           </div>
         </div>
 
-        {/* Search + Filter */}
+       
         <div className="flex flex-col gap-3 sm:flex-row">
           <input
             type="text"

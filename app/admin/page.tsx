@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import {LogOut} from "lucide-react"
+import { LogOut } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {
@@ -150,7 +150,6 @@ function EmptyState({
         {description}
       </p>
       <Button
-        asChild
         variant="outline"
         className="mt-5 border-zinc-700 bg-zinc-950 text-zinc-200 hover:bg-zinc-900 hover:text-white"
       >
@@ -239,7 +238,7 @@ export default async function AdminDashboard() {
       .sort({ createdAt: -1 })
       .limit(6)
       .populate("reporter", "username ID email")
-      .lean<LostReport[]>(),
+      .lean<LostReport[]>(),// returns pure json object instead of full document
     FoundItem.find()
       .sort({ createdAt: -1 })
       .limit(6)
@@ -259,7 +258,6 @@ export default async function AdminDashboard() {
     finder: normalizePerson(report.finder),
   }));
 
-      
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
@@ -267,13 +265,10 @@ export default async function AdminDashboard() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.12),transparent_26%)]" />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <Badge className="rounded-full border border-zinc-700 bg-zinc-950 px-4 py-1 text-blue-300">
-                Admin 
-              </Badge>
+             
               <h1 className="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
                 Review reports, spot matches, and keep the queue under control.
               </h1>
-      
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -346,9 +341,12 @@ export default async function AdminDashboard() {
                   >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="font-semibold text-white">{report.title}</p>
+                        <p className="font-semibold text-white">
+                          {report.title}
+                        </p>
                         <p className="mt-1 text-sm text-zinc-400">
-                          {formatLabel(report.category)} at {report.lostLocation}
+                          {formatLabel(report.category)} at{" "}
+                          {report.lostLocation}
                         </p>
                       </div>
                       <Badge
@@ -407,7 +405,8 @@ export default async function AdminDashboard() {
                             {report.title}
                           </p>
                           <p className="mt-1 text-sm text-zinc-400">
-                            {formatLabel(report.category)} at {report.foundLocation}
+                            {formatLabel(report.category)} at{" "}
+                            {report.foundLocation}
                           </p>
                         </div>
                         <Badge
@@ -421,7 +420,10 @@ export default async function AdminDashboard() {
                         <span>Finder: {personLabel(report.finder)}</span>
                         <span>Found: {formatShortDate(report.foundDate)}</span>
                         <span>
-                          Holder: {report.currentHolder ? formatLabel(report.currentHolder) : "Not set"}
+                          Holder:{" "}
+                          {report.currentHolder
+                            ? formatLabel(report.currentHolder)
+                            : "Not set"}
                         </span>
                       </div>
                       <div className="mt-4 flex justify-start">
@@ -467,9 +469,6 @@ export default async function AdminDashboard() {
                     </p>
                   </div>
                 </div>
-                  <div className="flex items-center gap-3">
-            <LogoutButton />
-                  </div>
               </CardContent>
             </Card>
           </div>

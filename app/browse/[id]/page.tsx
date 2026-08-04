@@ -67,16 +67,7 @@ export default function FoundItemClaimPage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-10 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl space-y-6">
-
-        <Link
-          href="/browse"
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 transition hover:text-white"
-        >
-          <ArrowLeft className="size-4" />
-          Back to browse
-        </Link>
-
-        {/* Item details */}
+        {/* item details */}
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 space-y-4">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -107,8 +98,6 @@ export default function FoundItemClaimPage() {
             <p className="leading-6">{item.description}</p>
           </div>
         </div>
-
-        {/* Claim form */}
         <ClaimFoundItemForm
           foundItemId={item._id}
           verificationQuestions={item.verificationQuestions}

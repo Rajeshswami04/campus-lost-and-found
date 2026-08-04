@@ -212,30 +212,7 @@ export default async function Home() {
       <section className="relative isolate">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.24),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.18),transparent_24%)]" />
         <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-6 py-8 lg:px-10">
-          <header className="flex items-center justify-between">
-            <div>
-              <p className="text-lg font-black tracking-[0.22em] uppercase text-blue-400">
-                Lost & Found
-              </p>
-              <p className="text-sm text-zinc-400">
-                Reuniting people with what matters.
-              </p>
-            </div>
-            <nav className="hidden items-center gap-3 md:flex">
-              <Link
-                href="/login"
-                className="text-sm font-medium text-zinc-400 transition hover:text-white"
-              >
-                Login
-              </Link>
-              <Button
-                asChild
-                className="rounded-full bg-blue-600 px-5 text-white hover:bg-blue-700"
-              >
-                <Link href="/signup">Get Started</Link>
-              </Button>
-            </nav>
-          </header>
+          
 
           <div className="grid flex-1 items-center gap-14 py-14 lg:grid-cols-[1.1fr_0.9fr] lg:py-20">
             <div className="max-w-2xl">

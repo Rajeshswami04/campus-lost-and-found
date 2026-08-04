@@ -103,13 +103,6 @@ export default function UserProfilePage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        <Link
-          href="/user"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-400 transition hover:text-white"
-        >
-          <ArrowLeft className="size-4" />
-          Back to dashboard
-        </Link>
 
         <section className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-900 p-6 shadow-2xl shadow-black/30 lg:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.12),transparent_26%)]" />

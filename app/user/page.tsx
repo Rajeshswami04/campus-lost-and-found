@@ -148,41 +148,6 @@ export default function UserPage() {
                 with their current status and important details.
               </p>
             </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/user/profile"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
-              >
-                <UserRound className="size-4" />
-                Edit profile
-              </Link>
-              <Link
-                href="/browse"
-                className="inline-flex items-center   justify-center rounded-lg  bg-zinc-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
-              >
-                Claim
-              </Link>
-              <Link
-                href="/lost"
-                className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
-              >
-                 Lost 
-              </Link>
-              <Link
-                href="/found"
-                className="inline-flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
-              >
-                Found
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
-              >
-                <LogOut className="size-4" />
-                Logout
-              </button>
-            </div>
           </div>
         </section>
 

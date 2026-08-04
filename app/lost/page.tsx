@@ -133,14 +133,6 @@ export default function LostPage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-10 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 transition hover:text-white"
-        >
-          <ArrowLeft className="size-4" />
-          Back to home
-        </Link>
-
         <div className="mt-6 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <section className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl shadow-black/20">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-400">

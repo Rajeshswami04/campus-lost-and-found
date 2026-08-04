@@ -6,6 +6,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { LogOut } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 export function LogoutButton() {
   const router = useRouter();
 
@@ -14,6 +16,7 @@ export function LogoutButton() {
       await axios.get("/api/users/logout");
       toast.success("Logged out successfully");
       router.push("/login");
+      router.refresh();
     } catch (error: unknown) {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.error || "Error in logout"
@@ -23,12 +26,13 @@ export function LogoutButton() {
   };
 
   return (
-    <button
+    <Button
       onClick={handleLogout}
-      className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-700 bg-zinc-950 px-5 py-3 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
+      variant="outline"
+      className="border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 hover:text-white"
     >
       <LogOut className="size-4" />
       Logout
-    </button>
+    </Button>
   );
 }
