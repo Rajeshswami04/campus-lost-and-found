@@ -59,7 +59,7 @@ function NavShell({
   );
 }
 
-export default async function Navbar() {
+export default async function NavBar() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
