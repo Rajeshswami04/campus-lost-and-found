@@ -5,8 +5,8 @@ import { ShieldCheck, UserRound } from "lucide-react";
 //copied content
 import { Button } from "@/components/ui/button";
 import { LogoutButton } from "@/components/logoutbutton";
-import { NavShell, baseLinks } from "@/components/navshell";
-
+import { NavShell } from "@/components/navshell";
+import { baseLinks } from "@/lib/links";
 export default async function NavBar() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;

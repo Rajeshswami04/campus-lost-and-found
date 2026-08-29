@@ -42,7 +42,7 @@ function getToken(request: NextRequest) {
 
 function getEndOfToday() {
   const today = new Date();
-  today.setHours(23, 59, 59, 999);
+  today.setHours(23, 59, 59, 999);  // to prevent future dates
   return today;
 }
 

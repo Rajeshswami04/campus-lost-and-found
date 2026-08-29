@@ -6,7 +6,7 @@ import { connect } from "@/app/db/dbConfig";
 
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> } // in recent nextjs it context is promise 
 ) {
   const blocked = await protect(request, publicReadAj);
   if (blocked) return blocked;

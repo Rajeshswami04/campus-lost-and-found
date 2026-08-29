@@ -9,6 +9,7 @@ export async function POST(request:NextRequest) {
     try {
         const blocked = await protect(request, authAj);
         if (blocked) return blocked;
+        // checking by middleware arcjet that is it blocked or not because of bot or toom any requests
 
         await connect();
         const reqBody=await request.json();

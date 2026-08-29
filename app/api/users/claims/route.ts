@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Found item not found" }, { status: 404 });
     }
 
-    if (String(foundItem.finder) === authUser.id) {
+    if (String(foundItem.finder) === authUser.id) { // khud hi claim krna chahta h to ye to galt bat h na
       return NextResponse.json(
         { error: "You cannot claim your own found item" },
         { status: 400 }
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingClaim = await Claim.findOne({
+    const existingClaim = await Claim.findOne({  // check weather same claim exits or not 
       foundItem: foundItemId,
       claimant: authUser.id,
       status: "pending",

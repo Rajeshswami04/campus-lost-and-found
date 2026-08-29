@@ -3,12 +3,12 @@ import { apiAj, protect, writeAj } from "@/lib/arcjet";
 import { verifyAuthToken } from "@/lib/auth";
 import User from "@/models/Users";
 import { NextRequest, NextResponse } from "next/server";
-// lean return plain javascritp objects 
+// lean return plain javascript objects 
 function getToken(request: NextRequest) {
   return request.cookies.get("token")?.value;
 }
 
-function cleanedstring(value: unknown) {
+function cleanedstring(value: unknown) {   //trimmed
   if (value === undefined || value === null) {
     return undefined;
   }
@@ -17,7 +17,7 @@ function cleanedstring(value: unknown) {
   return trimmed || undefined;
 }
 
-function serializeUser(user: {
+function serializeUser(user: {    // serilization concept applied here 
   _id: unknown;
   username: string;
   ID: string;
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, user: serializeUser(user) },
+      { success: true, user: serializeUser(user) },  // so that json in response looks good bhai
       { status: 200 }
     );
   } catch (error: unknown) {
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest) {  // mainly patch is used to update partially parts
   try {
     const blocked = await protect(request, writeAj);
     if (blocked) return blocked;
@@ -115,7 +115,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json(
         { error: "Year of study must be between 1 and 4" },
         { status: 400 }
-      );
+      );   // validation concept used here
     }
 
     const updates = {
@@ -129,7 +129,7 @@ export async function PATCH(request: NextRequest) {
 
     const user = await User.findByIdAndUpdate(authUser.id, updates, {
       new: true,
-      runValidators: true,
+      runValidators: true, // check all types are correct
     })
       .select("-password -verifyToken -verifyTokenExpiry -forgotPasswordToken -forgotPasswordTokenExpiry")
       .lean();

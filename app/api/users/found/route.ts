@@ -35,7 +35,7 @@ function normalizeImages(value: unknown) {
       .filter(Boolean);
   }
   if (typeof value === "string") {
-    return value.trim() ? [value.trim()] : [];
+    return value.trim() ? [value.trim()] : []; // if value is there then trim else return empty array
   }
   return [];
 }
@@ -52,7 +52,7 @@ function getEndOfToday() {
 
 export async function POST(request: NextRequest) {
   try {
-    const blocked = await protect(request, writeAj);
+    const blocked = await protect(request, writeAj); //checking againist writeAj part
     if (blocked) return blocked;
 
     await connect();
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
       foundLocation: String(foundLocation).trim(),
       foundDate: parsedFoundDate,
       verificationQuestions: normalizedVerificationQuestions,
-      status: FOUND_ITEM_STATUSES.includes("available") ? "available" : undefined,
+      status: "available",
       currentHolder,
       storageLocation: String(storageLocation).trim(),
     });
@@ -169,7 +169,7 @@ export async function GET(request: NextRequest) {
       );
     }
     const authUser = verifyAuthToken(token);
-    const foundItems = await FoundItem.find({ finder: authUser.id })
+    const foundItems = await FoundItem.find({ finder: authUser.id })// return all reports by user foudned
       .sort({ createdAt: -1 });
     return NextResponse.json(
       {

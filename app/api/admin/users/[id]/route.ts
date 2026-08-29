@@ -15,21 +15,21 @@ async function requireAdmin() {
 
   const authUser = verifyAuthToken(token);
 
-  if (!hasRequiredRole(authUser.role, ["admin"])) {
+  if (!hasRequiredRole(authUser.role, ["admin"])) {   // check is it admin role or anyone else
     throw new Error("FORBIDDEN");
   }
 
   return authUser;
 }
 
-export async function PATCH(
+export async function PATCH(   // if any update done by admin
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "UNAUTHORIZED";
+  } catch (err:any) {
+    const message = err.message;
     const statusCode = message === "FORBIDDEN" ? 403 : 401;
     return NextResponse.json({ error: message }, { status: statusCode });
   }
@@ -39,11 +39,11 @@ export async function PATCH(
 
   const allowedUpdates: Record<string, string> = {};
 
-  if (body.accountStatus && ["active", "blocked"].includes(body.accountStatus)) {
+  if (body.accountStatus && ["active", "blocked"].includes(body.accountStatus)) {   // it we want acconut status change then we can also do that
     allowedUpdates.accountStatus = body.accountStatus;
   }
 
-  if (body.role && ["user", "admin"].includes(body.role)) {
+  if (body.role && ["user", "admin"].includes(body.role)) {  // if user wants to become admin , admin can make it
     allowedUpdates.role = body.role;
   }
 
@@ -59,7 +59,7 @@ export async function PATCH(
 
     const updatedUser = await User.findByIdAndUpdate(id, allowedUpdates, {
       new: true,
-    }).select("username ID email role accountStatus");
+    }).select("username ID email role accountStatus");  // these fields can be changed by admin
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

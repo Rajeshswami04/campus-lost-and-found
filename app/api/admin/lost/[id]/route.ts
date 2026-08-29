@@ -8,9 +8,9 @@ import { NextRequest, NextResponse } from "next/server";
 function getToken(request: NextRequest) {
   return request.cookies.get("token")?.value;
 }
-
+// this is for changing status  of lost items
 export async function PATCH(
-  request: NextRequest,
+  request: NextRequest, 
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -33,6 +33,7 @@ export async function PATCH(
     const reqBody = await request.json();
     const status = String(reqBody.status || "").trim();
 
+    //check status of each item is valid or not
     if (!LOST_ITEM_STATUSES.includes(status as (typeof LOST_ITEM_STATUSES)[number])) {
       return NextResponse.json({ error: "Invalid lost item status" }, { status: 400 });
     }
@@ -41,8 +42,8 @@ export async function PATCH(
       id,
       {
         status,
-        handledBy: authUser.id,
-        resolvedAt: status === "returned" || status === "closed" ? new Date() : undefined,
+        handledBy: authUser.id, //admins id
+        resolvedAt: status === "returned"  ? new Date() : undefined,
       },
       { new: true }
     );
