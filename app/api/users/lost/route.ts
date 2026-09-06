@@ -8,29 +8,17 @@ import { NextRequest, NextResponse } from "next/server";
 //normalisation means to trim the space
 
 function normalizeProofHints(value: unknown) {
-  if (Array.isArray(value)) {
-    return value
-      .map((hint) => String(hint).trim())
-      .filter(Boolean);
-  }
-
   if (typeof value === "string") {
     return value
       .split(",")
       .map((hint) => hint.trim())
       .filter(Boolean);
   }
-
   return [];
 }
 
 function normalizeImages(value: unknown) {
   if (!value) return [];
-  if (Array.isArray(value)) {
-    return value
-      .map((image) => String(image).trim())
-      .filter(Boolean);
-  }
   if (typeof value === "string") {
     return value.trim() ? [value.trim()] : [];
   }
@@ -83,13 +71,6 @@ export async function POST(request: NextRequest) {
     }
     
     const parsedLostDate = new Date(lostDate);
-    if (Number.isNaN(parsedLostDate.getTime())) {
-      return NextResponse.json(
-        { error: "Invalid lost date" },
-        { status: 400 }
-      );
-    }
-
     if (parsedLostDate > getEndOfToday()) {
       return NextResponse.json(
         { error: "Lost date cannot be in the future" },

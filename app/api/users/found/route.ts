@@ -11,12 +11,6 @@ import {
 //normalisation means to trim the space
 
 function normalizeQuestions(value: unknown) {
-  if (Array.isArray(value)) {
-    return value
-      .map((hint) => String(hint).trim())
-      .filter(Boolean);
-  }
-
   if (typeof value === "string") {
     return value
       .split(",")
@@ -29,11 +23,6 @@ function normalizeQuestions(value: unknown) {
 
 function normalizeImages(value: unknown) {
   if (!value) return [];
-  if (Array.isArray(value)) {
-    return value
-      .map((image) => String(image).trim())
-      .filter(Boolean);
-  }
   if (typeof value === "string") {
     return value.trim() ? [value.trim()] : []; // if value is there then trim else return empty array
   }
@@ -107,13 +96,6 @@ export async function POST(request: NextRequest) {
     }
 
     const parsedFoundDate = new Date(foundDate);
-    if (Number.isNaN(parsedFoundDate.getTime())) {
-      return NextResponse.json(
-        { error: "Invalid found date" },
-        { status: 400 }
-      );
-    }
-
     if (parsedFoundDate > getEndOfToday()) {
       return NextResponse.json(
         { error: "Found date cannot be in the future" },
