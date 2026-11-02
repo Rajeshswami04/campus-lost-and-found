@@ -124,3 +124,203 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* A restrained paper-and-ink palette keeps every route in the same visual system. */
+:root {
+  color-scheme: light;
+  --background: #f7f7f5;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #eeeeec;
+  --secondary-foreground: #262626;
+  --muted: #eeeeec;
+  --muted-foreground: #737373;
+  --accent: #eeeeec;
+  --accent-foreground: #262626;
+  --border: #dededb;
+  --input: #dededb;
+  --ring: #737373;
+}
+
+html { background: var(--background); }
+html:not(.dark) .theme-icon-dark { display: none; }
+html.dark .theme-icon-light { display: none; }
+body {
+  min-height: 100vh;
+  font-family: var(--font-geist-sans), Inter, "Segoe UI", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #101010;
+  --foreground: #f5f5f5;
+  --card: #191919;
+  --card-foreground: #f5f5f5;
+  --popover: #191919;
+  --popover-foreground: #f5f5f5;
+  --primary: #f5f5f5;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #f5f5f5;
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --accent: #262626;
+  --accent-foreground: #f5f5f5;
+  --border: #333333;
+  --input: #3a3a3a;
+  --ring: #a3a3a3;
+}
+
+/* Existing screens use zinc utility classes; remap those surfaces for the paper theme. */
+html:not(.dark) .bg-zinc-950 { background-color: #f7f7f5 !important; }
+html:not(.dark) .bg-black { background-color: #f7f7f5 !important; }
+html:not(.dark) .bg-zinc-950\/95 { background-color: rgb(255 255 255 / 95%) !important; }
+html:not(.dark) .bg-zinc-950\/70 { background-color: #ffffff !important; }
+html:not(.dark) .bg-zinc-900 { background-color: #ffffff !important; }
+html:not(.dark) .bg-zinc-900\/70 { background-color: #f2f2ef !important; }
+html:not(.dark) .bg-zinc-800 { background-color: #eeeeec !important; }
+html:not(.dark) .bg-zinc-700 { background-color: #dededb !important; }
+html:not(.dark) [class~="bg-zinc-100"] { background-color: #171717 !important; }
+html:not(.dark) [class~="bg-zinc-100"].text-zinc-950 { color: #ffffff !important; }
+html:not(.dark) [class~="hover:bg-zinc-800"]:hover,
+html:not(.dark) [class~="hover:bg-zinc-900"]:hover { background-color: #eeeeec !important; }
+html:not(.dark) [class~="hover:bg-zinc-200"]:hover { background-color: #383838 !important; }
+html:not(.dark) .text-white,
+html:not(.dark) .text-zinc-100,
+html:not(.dark) .text-zinc-200 { color: #171717 !important; }
+html:not(.dark) .text-zinc-300 { color: #404040 !important; }
+html:not(.dark) .text-zinc-400 { color: #666666 !important; }
+html:not(.dark) .text-zinc-500 { color: #737373 !important; }
+html:not(.dark) .text-zinc-600 { color: #858585 !important; }
+html:not(.dark) .border-zinc-700,
+html:not(.dark) .border-zinc-800 { border-color: #dededb !important; }
+html:not(.dark) .bg-blue-600,
+html:not(.dark) .bg-blue-500 { background-color: #171717 !important; }
+html:not(.dark) .bg-blue-600.text-white,
+html:not(.dark) .bg-blue-500.text-white { color: #ffffff !important; }
+html:not(.dark) .hover\:bg-blue-700:hover,
+html:not(.dark) .hover\:bg-blue-500:hover { background-color: #383838 !important; }
+html:not(.dark) .text-blue-300,
+html:not(.dark) .text-blue-400 { color: #404040 !important; }
+html:not(.dark) .bg-blue-500\/10,
+html:not(.dark) .bg-sky-500\/10 { background-color: #eeeeec !important; }
+html:not(.dark) .text-sky-300,
+html:not(.dark) .text-emerald-300,
+html:not(.dark) .text-amber-300 { color: #404040 !important; }
+html:not(.dark) .border-blue-500\/30 { border-color: #bdbdb8 !important; }
+
+::selection { background: #a3a3a3; color: #111111; }
+
+/* Legacy utility classes used on forms and status controls share the same neutral palette. */
+html:not(.dark) [class~="bg-zinc-950/90"],
+html:not(.dark) [class~="bg-zinc-950/70"] { background-color: #ffffff !important; }
+html:not(.dark) [class~="bg-zinc-900/70"] { background-color: #f2f2ef !important; }
+html:not(.dark) [class~="bg-zinc-800/70"] { background-color: #eeeeec !important; }
+html:not(.dark) [class~="border-zinc-600"],
+html:not(.dark) [class~="border-gray-300"],
+html:not(.dark) [class~="border-gray-600"] { border-color: #dededb !important; }
+html:not(.dark) [class~="focus:border-blue-500"]:focus { border-color: #737373 !important; }
+html:not(.dark) [class~="focus:ring-blue-500"]:focus,
+html:not(.dark) [class~="focus:ring-blue-500/30"]:focus { --tw-ring-color: #737373 !important; }
+html:not(.dark) [class*="bg-[radial-gradient"],
+html:not(.dark) [class*="bg-[linear-gradient"] {
+  background-image: radial-gradient(circle at top left, rgb(0 0 0 / 3%), transparent 32%),
+    radial-gradient(circle at bottom right, rgb(0 0 0 / 2%), transparent 28%) !important;
+}
+
+html:not(.dark) [class~="bg-blue-700"],
+html:not(.dark) [class~="bg-emerald-600"] { background-color: #171717 !important; }
+html:not(.dark) [class~="bg-blue-700"].text-white,
+html:not(.dark) [class~="bg-emerald-600"].text-white { color: #ffffff !important; }
+html:not(.dark) [class~="hover:bg-emerald-500"]:hover { background-color: #383838 !important; }
+html:not(.dark) [class~="bg-sky-500/20"],
+html:not(.dark) [class~="bg-blue-500/20"],
+html:not(.dark) [class~="bg-blue-500/10"],
+html:not(.dark) [class~="bg-amber-500/10"],
+html:not(.dark) [class~="bg-emerald-500/10"],
+html:not(.dark) [class~="bg-green-600/20"],
+html:not(.dark) [class~="bg-purple-500/10"],
+html:not(.dark) [class~="bg-red-500/10"],
+html:not(.dark) [class~="bg-rose-500/10"] { background-color: #eeeeec !important; }
+html:not(.dark) [class~="text-emerald-400"],
+html:not(.dark) [class~="text-green-400"],
+html:not(.dark) [class~="text-purple-300"],
+html:not(.dark) [class~="text-red-300"],
+html:not(.dark) [class~="text-red-400"],
+html:not(.dark) [class~="text-rose-300"],
+html:not(.dark) [class~="text-rose-400"] { color: #404040 !important; }
+html:not(.dark) [class~="border-blue-500"],
+html:not(.dark) [class~="border-blue-600"],
+html:not(.dark) [class~="border-amber-500/30"],
+html:not(.dark) [class~="border-emerald-500/30"],
+html:not(.dark) [class~="border-green-600/50"],
+html:not(.dark) [class~="border-purple-500/30"],
+html:not(.dark) [class~="border-red-500/30"],
+html:not(.dark) [class~="border-red-500/50"],
+html:not(.dark) [class~="border-rose-500/30"] { border-color: #bdbdb8 !important; }
+
+.dark [class~="bg-blue-700"],
+.dark [class~="bg-emerald-600"] { background-color: #f5f5f5 !important; }
+.dark [class~="bg-blue-700"].text-white,
+.dark [class~="bg-emerald-600"].text-white { color: #171717 !important; }
+.dark [class~="bg-sky-500/20"],
+.dark [class~="bg-blue-500/20"],
+.dark [class~="bg-blue-500/10"],
+.dark [class~="bg-amber-500/10"],
+.dark [class~="bg-emerald-500/10"],
+.dark [class~="bg-green-600/20"],
+.dark [class~="bg-purple-500/10"],
+.dark [class~="bg-red-500/10"],
+.dark [class~="bg-rose-500/10"] { background-color: #262626 !important; }
+.dark [class~="text-blue-300"],
+.dark [class~="text-blue-400"],
+.dark [class~="text-sky-300"],
+.dark [class~="text-emerald-300"],
+.dark [class~="text-emerald-400"],
+.dark [class~="text-amber-300"],
+.dark [class~="text-green-400"],
+.dark [class~="text-purple-300"],
+.dark [class~="text-red-300"],
+.dark [class~="text-red-400"],
+.dark [class~="text-rose-300"],
+.dark [class~="text-rose-400"] { color: #d4d4d4 !important; }
+.dark [class~="border-zinc-600"],
+.dark [class~="border-gray-300"],
+.dark [class~="border-gray-600"],
+.dark [class~="border-blue-500"],
+.dark [class~="border-blue-600"],
+.dark [class~="border-blue-500/30"],
+.dark [class~="border-sky-500/30"],
+.dark [class~="border-amber-500/30"],
+.dark [class~="border-emerald-500/30"],
+.dark [class~="border-green-600/50"],
+.dark [class~="border-purple-500/30"],
+.dark [class~="border-red-500/30"],
+.dark [class~="border-red-500/50"],
+.dark [class~="border-rose-500/30"] { border-color: #404040 !important; }
+.dark [class*="bg-[radial-gradient"],
+.dark [class*="bg-[linear-gradient"] {
+  background-image: radial-gradient(circle at top left, rgb(255 255 255 / 4%), transparent 32%),
+    radial-gradient(circle at bottom right, rgb(255 255 255 / 2%), transparent 28%) !important;
+}
+.dark [class~="hover:bg-emerald-500"]:hover { background-color: #d4d4d4 !important; }
+
+/* Keep primary actions legible and consistent in both theme modes. */
+.dark .bg-blue-600,
+.dark .bg-blue-500 { background-color: #f5f5f5 !important; }
+.dark .bg-blue-600.text-white,
+.dark .bg-blue-500.text-white { color: #171717 !important; }
+.dark .hover\:bg-blue-700:hover,
+.dark .hover\:bg-blue-500:hover { background-color: #d4d4d4 !important; }

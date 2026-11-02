@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       lostLocation: String(lostLocation).trim(),
       lostDate: parsedLostDate,
       proofHints: normalizedProofHints,
-      status: "under_review",
+      status: "under_review", // can be open 
     });
 
     return NextResponse.json(

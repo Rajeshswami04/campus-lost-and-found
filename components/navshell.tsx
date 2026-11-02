@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const baseLinks = [
   { href: "/", label: "Home" },
@@ -25,17 +26,16 @@ export function NavShell({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 text-white shadow-lg shadow-black/20 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 text-white backdrop-blur">
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-base font-black tracking-wide text-white"
+            className="inline-flex items-center gap-2 text-base font-semibold tracking-tight text-white"
           >
-            <p className="text-lg font-black tracking-[0.22em] uppercase text-blue-400">
-              Lost & Found
-            </p>
+            <span className="flex size-8 items-center justify-center rounded-md bg-blue-600 text-sm font-bold text-white">L</span>
+            <span className="text-base font-semibold tracking-tight">Lost &amp; Found</span>
           </Link>
 
           {/* Desktop Links */}
@@ -49,6 +49,7 @@ export function NavShell({
 
           {/* Right Actions & Mobile Toggle */}
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <div className="hidden items-center gap-2 sm:flex">
               {children}
             </div>
